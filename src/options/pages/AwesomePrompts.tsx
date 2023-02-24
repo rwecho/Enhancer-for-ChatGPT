@@ -1,41 +1,57 @@
 import { getPrompts, Prompt } from '@/services/PromptsService'
-import { Button, Card, CardBody, CardHeader, Heading } from '@chakra-ui/react'
+import {
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Spinner,
+} from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
-import { Column } from 'react-table'
-import { DataTable } from '@/Components'
+import { DataTable, LoadingBox } from '@/Components'
+import { ColumnDef } from '@tanstack/react-table'
+import { delay } from '@/services/promise'
 
 export const AwesomePrompts = () => {
   const [data, setData] = useState<Prompt[]>([])
-  const columns = useMemo<Array<Column>>(
+  const [isLoading, setIsLoading] = useState(false)
+  const columns = useMemo<Array<ColumnDef<Prompt>>>(
     () => [
       {
-        Header: 'Command',
-        accessor: 'command',
+        header: 'Command',
+        accessorKey: 'command',
       },
       {
-        Header: 'Act',
-        accessor: 'act',
+        header: 'Act',
+        accessorKey: 'act',
       },
       {
-        Header: 'Prompt',
-        accessor: 'prompt',
+        header: 'Prompt',
+        accessorKey: 'prompt',
       },
     ],
     []
   )
 
-  useEffect(() => {
-    const loadData = async () => {
+  const loadData = async () => {
+    try {
+      setIsLoading(true)
       const prompts = await getPrompts()
       setData(prompts)
+    } catch (error) {
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  useEffect(() => {
     loadData()
   }, [])
 
   const handleSync = async () => {
-    const prompts = await getPrompts(true)
-    setData(prompts)
+    await loadData()
   }
+
   return (
     <Card variant={'elevated'}>
       <CardHeader display={'flex'}>
@@ -47,7 +63,9 @@ export const AwesomePrompts = () => {
         </Button>
       </CardHeader>
       <CardBody>
-        <DataTable columns={columns} data={data}></DataTable>
+        <LoadingBox isLoading={isLoading}>
+          <DataTable columns={columns} data={data}></DataTable>
+        </LoadingBox>
       </CardBody>
     </Card>
   )

@@ -7,69 +7,150 @@ import {
   Heading,
   Tbody,
   Td,
+  HStack,
+  Button,
+  Text,
+  NumberInput,
+  Select,
+  NumberInputField,
+  NumberInputStepper,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  Spacer,
 } from '@chakra-ui/react'
 import React from 'react'
 import {
-  useTable,
-  useGlobalFilter,
-  useSortBy,
-  usePagination,
-  Column,
-} from 'react-table'
+  ColumnDef,
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  flexRender,
+} from '@tanstack/react-table'
 
 export type DataTableProps<T> = {
-  columns: Column[]
+  columns: ColumnDef<T>[]
   data: Array<T>
 }
 
 export const DataTable = <T extends object>(props: DataTableProps<T>) => {
   const { columns, data } = props
-  const tableInstance = useTable(
-    {
-      columns,
-      data,
-    },
-    useGlobalFilter,
-    useSortBy,
-    usePagination
-  )
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    tableInstance
-  return (
-    <Table {...getTableProps()} variant="simple">
-      <Thead bg={'gray.50'}>
-        {headerGroups.map((headerGroup: any, index: number) => (
-          <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
-            {headerGroup.headers.map((column: any, index: number) => (
-              <Th
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-                key={index}
-              >
-                <Flex justify="space-between" align="center">
-                  <Heading size={'sm'}>{column.render('Header')}</Heading>
-                </Flex>
-              </Th>
-            ))}
-          </Tr>
-        ))}
-      </Thead>
+  const table = useReactTable({
+    data,
+    columns,
+    // Pipeline
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    //
+    debugTable: true,
+  })
 
-      <Tbody {...getTableBodyProps()}>
-        {rows.map((row: any, index: number) => {
-          prepareRow(row)
-          return (
-            <Tr {...row.getRowProps()} key={index}>
-              {row.cells.map((cell: any, index: number) => (
-                <Td key={index}>
-                  <Flex align="center" fontSize="sm" fontWeight="normal">
-                    {cell.render('Cell')}
-                  </Flex>
-                </Td>
+  return (
+    <>
+      <Table variant="simple">
+        <Thead bg={'gray.50'}>
+          {table.getHeaderGroups().map((headerGroup, index: number) => (
+            <Tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <Th key={header.id} colSpan={header.colSpan}>
+                  {header.isPlaceholder ? null : (
+                    <Flex justify="space-between" align="center">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </Flex>
+                  )}
+                </Th>
               ))}
             </Tr>
-          )
-        })}
-      </Tbody>
-    </Table>
+          ))}
+        </Thead>
+
+        <Tbody>
+          {table.getRowModel().rows.map((row) => {
+            return (
+              <Tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <Td key={cell.id}>
+                      <Flex align="center" fontSize="sm" fontWeight="normal">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Flex>
+                    </Td>
+                  )
+                })}
+              </Tr>
+            )
+          })}
+        </Tbody>
+      </Table>
+
+      <HStack justifyContent={'center'} my={4}>
+        <Text>
+          {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+        </Text>
+
+        <Select
+          w={'auto'}
+          value={table.getState().pagination.pageSize}
+          onChange={(e) => {
+            table.setPageSize(Number(e.target.value))
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              {pageSize}
+            </option>
+          ))}
+        </Select>
+        <Spacer></Spacer>
+        <Button
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<<'}
+        </Button>
+        <Button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {'<'}
+        </Button>
+        <Button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>'}
+        </Button>
+        <Button
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
+        >
+          {'>>'}
+        </Button>
+        <Spacer></Spacer>
+
+        <NumberInput
+          defaultValue={table.getState().pagination.pageIndex + 1}
+          onChange={(_, value) => {
+            const page = value - 1
+            table.setPageIndex(page)
+          }}
+          min={0}
+          max={table.getPageCount()}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
+      </HStack>
+    </>
   )
 }
