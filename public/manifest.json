@@ -1,0 +1,40 @@
+{
+  "name": "Enhancer for ChatGPT",
+  "description": "A browser extension that enhances our ability to utilize ChatGPT effectively.",
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "background": {
+    "service_worker": "js/background.js",
+    "type": "module"
+  },
+  "permissions": ["storage"],
+
+  "host_permissions": ["*://chat.openai.com/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://chat.openai.com/*"],
+      "js": ["js/vendor.js", "js/inject.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/images/icon16.jpg",
+      "32": "/images/icon32.jpg",
+      "48": "/images/icon48.jpg",
+      "64": "/images/icon64.jpg",
+      "128": "/images/icon128.jpg"
+    }
+  },
+  "icons": {
+    "16": "/images/icon16.jpg",
+    "32": "/images/icon32.jpg",
+    "48": "/images/icon48.jpg",
+    "64": "/images/icon64.jpg",
+    "128": "/images/icon128.jpg"
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  }
+}
