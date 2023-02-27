@@ -3,7 +3,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (type === 'tts') {
     if (action === 'speak') {
-      chrome.tts.speak(text)
+      console.log('tts speak:', text)
+      chrome.tts.speak(text, { lang: 'en-US' })
     } else if (action === 'resume') {
       chrome.tts.resume()
     } else if (action === 'stop') {

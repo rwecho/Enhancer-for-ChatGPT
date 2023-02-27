@@ -1,4 +1,4 @@
-import { ChakraProvider, theme } from '@chakra-ui/react'
+import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
 import React, { useEffect } from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import { getTextAreaElement } from './selector'
@@ -27,6 +27,7 @@ export const Container = () => {
       document.body.appendChild(div)
       root.render(
         <ChakraProvider theme={theme}>
+          <ColorModeScript initialColorMode="system"></ColorModeScript>
           <CreateAndUpdateModalProvider>
             <Toolbar></Toolbar>
             <Prompts></Prompts>

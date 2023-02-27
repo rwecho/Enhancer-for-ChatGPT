@@ -1,9 +1,15 @@
-import { Center, ChakraProvider, Collapse, IconButton } from '@chakra-ui/react'
+import {
+  Center,
+  ChakraProvider,
+  Collapse,
+  HStack,
+  IconButton,
+} from '@chakra-ui/react'
 import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { getChatElements, getThreadElement } from './selector'
-import { AiOutlineSound } from 'react-icons/ai'
-import { speak } from '@/services/TtsService'
+import { AiOutlineSound, AiOutlineStop } from 'react-icons/ai'
+import { speak, stop } from '@/services/TtsService'
 
 export const ChatToolbar = () => {
   const thread = getThreadElement()
@@ -66,12 +72,16 @@ const ChatToolbarView = ({
   container: HTMLElement
 }) => {
   const [mouseOver, setMouseOver] = useState(false)
-  const handleTts = () => {
+  const handleTtsSpeak = () => {
     const textContent = text.textContent
     if (!textContent) {
       return
     }
     speak(textContent)
+  }
+
+  const handleTtsStop = () => {
+    stop()
   }
 
   useEffect(() => {
@@ -92,11 +102,20 @@ const ChatToolbarView = ({
   return (
     <Collapse in={mouseOver} animateOpacity>
       <Center mb={4}>
-        <IconButton
-          aria-label="Search database"
-          icon={<AiOutlineSound />}
-          onClick={handleTts}
-        />
+        <HStack spacing={2}>
+          <IconButton
+            aria-label="speak text by tts"
+            icon={<AiOutlineSound />}
+            onClick={handleTtsSpeak}
+            size={'sm'}
+          />
+          <IconButton
+            aria-label="stop tts"
+            icon={<AiOutlineStop />}
+            onClick={handleTtsStop}
+            size={'sm'}
+          />
+        </HStack>
       </Center>
     </Collapse>
   )
