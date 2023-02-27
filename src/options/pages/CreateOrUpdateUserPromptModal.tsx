@@ -15,6 +15,7 @@ import {
   Spacer,
   Button,
   useDisclosure,
+  Textarea,
 } from '@chakra-ui/react'
 import { Field, Form, Formik } from 'formik'
 import React from 'react'
@@ -73,7 +74,7 @@ export const CreateOrUpdateUserPromptModal = (
                         isInvalid={form.errors.prompt && form.touched.prompt}
                       >
                         <FormLabel htmlFor="prompt">Prompt</FormLabel>
-                        <Input {...field} id="prompt" placeholder="Prompt" />
+                        <Textarea {...field} id="prompt" placeholder="Prompt" />
                         <FormErrorMessage>
                           {form.errors.prompt}
                         </FormErrorMessage>

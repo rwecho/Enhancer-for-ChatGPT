@@ -219,12 +219,12 @@ const PromptList = ({
               </Kbd>
 
               {prompt.tag === 'awesome' && (
-                <Badge ml="1" alignSelf={'center'} size="xx-small">
+                <Badge ml="1" alignSelf={'center'} fontSize="3xs">
                   {prompt.tag}
                 </Badge>
               )}
               {prompt.tag === 'custom' && (
-                <Badge ml="1" alignSelf={'center'} size="xx-small">
+                <Badge ml="1" alignSelf={'center'} fontSize="3xs">
                   {prompt.tag}
                 </Badge>
               )}

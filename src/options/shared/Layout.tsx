@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { FiMenu } from 'react-icons/fi'
 
-import { TbPrompt } from 'react-icons/tb'
+import { TbPrompt, TbTerminal, TbTerminal2 } from 'react-icons/tb'
 import { IconType } from 'react-icons'
 
 interface LinkItemProps {
@@ -26,8 +26,8 @@ interface LinkItemProps {
   to: string
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Awesome Prompts', icon: TbPrompt, to: '#/' },
-  { name: 'User Prompts', icon: TbPrompt, to: '#/user-prompts' },
+  { name: 'Awesome Prompts', icon: TbTerminal, to: '#/' },
+  { name: 'User Prompts', icon: TbTerminal2, to: '#/user-prompts' },
 ]
 
 export const Layout = () => {
@@ -108,7 +108,7 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
 
   const baseStyle = {
     color: isActive() ? 'white' : undefined,
-    bg: isActive() ? 'cyan.500' : undefined,
+    bg: isActive() ? 'teal.500' : undefined,
   }
   return (
     <Link
@@ -125,7 +125,7 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
         cursor="pointer"
         sx={baseStyle}
         _hover={{
-          bg: 'cyan.400',
+          bg: 'teal.400',
           color: 'white',
         }}
         {...rest}
