@@ -21,6 +21,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@tanstack/react-table": "^8.7.9",
+    "formik": "^2.2.9",
     "framer-motion": "^9.0.4",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",

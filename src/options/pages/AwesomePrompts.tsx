@@ -1,16 +1,8 @@
-import { getPrompts, Prompt } from '@/services/PromptsService'
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  Heading,
-  Spinner,
-} from '@chakra-ui/react'
+import { getAwesomePrompts, Prompt } from '@/services/PromptsService'
+import { Button, Card, CardBody, CardHeader, Heading } from '@chakra-ui/react'
 import React, { useEffect, useMemo, useState } from 'react'
 import { DataTable, LoadingBox } from '@/Components'
 import { ColumnDef } from '@tanstack/react-table'
-import { delay } from '@/services/promise'
 
 export const AwesomePrompts = () => {
   const [data, setData] = useState<Prompt[]>([])
@@ -36,7 +28,7 @@ export const AwesomePrompts = () => {
   const loadData = async () => {
     try {
       setIsLoading(true)
-      const prompts = await getPrompts()
+      const prompts = await getAwesomePrompts()
       setData(prompts)
     } catch (error) {
     } finally {

@@ -4,6 +4,10 @@ export type Prompt = {
   prompt: string
 }
 
+export type PromptWithTag = Prompt & {
+  tag: 'custom' | 'awesome'
+}
+
 export const parsePrompts = (text: string) => {
   const rows = text.split(`\n`)
   const regex = /^"(.+)","(.+)"$/
@@ -27,14 +31,14 @@ export const parsePrompts = (text: string) => {
   return prompts
 }
 
-const storageKey = 'awesome-prompts'
+const promptsStorageKey = 'awesome-prompts'
 
-export const getPrompts = async (forceFetch = false) => {
+export const getAwesomePrompts = async (forceFetch = false) => {
   if (!forceFetch) {
-    const data = await chrome.storage.local.get(storageKey)
+    const data = await chrome.storage.local.get(promptsStorageKey)
 
-    if (storageKey in data) {
-      return data[storageKey] as Prompt[]
+    if (promptsStorageKey in data) {
+      return data[promptsStorageKey] as Prompt[]
     }
   }
   const promptsUrl =
@@ -44,11 +48,67 @@ export const getPrompts = async (forceFetch = false) => {
   const content = await response.text()
 
   const prompts = parsePrompts(content)
-  await chrome.storage.local.set({ [storageKey]: prompts })
+  await chrome.storage.local.set({ [promptsStorageKey]: prompts })
   return prompts
 }
 
-const normalizeAct = (act: string) => {
+export const getPrompts = async () => {
+  const userPrompts = await getUserPrompts()
+  const awesomePrompts = await getAwesomePrompts()
+
+  return [
+    ...userPrompts.map((p) => {
+      return { ...p, tag: 'custom' }
+    }),
+
+    ...awesomePrompts.map((p) => {
+      return { ...p, tag: 'awesome' }
+    }),
+  ] as Array<PromptWithTag>
+}
+
+const userStorageKey = 'user-customs'
+
+export const getUserPrompts = async () => {
+  const data = await chrome.storage.local.get(userStorageKey)
+
+  if (userStorageKey in data) {
+    return data[userStorageKey] as Prompt[]
+  }
+
+  return []
+}
+
+export const addOrUpdateUserPrompt = async (prompt: Prompt) => {
+  const data = await chrome.storage.local.get(userStorageKey)
+  let prompts = [] as Prompt[]
+  if (userStorageKey in data) {
+    prompts = data[userStorageKey] as Prompt[]
+  }
+
+  await chrome.storage.local.set({
+    [userStorageKey]: [
+      ...prompts.filter((p) => p.command !== prompt.command),
+      prompt,
+    ],
+  })
+}
+
+export const removeUserPrompt = async (prompt: Prompt) => {
+  const data = await chrome.storage.local.get(userStorageKey)
+
+  let prompts = [] as Prompt[]
+
+  if (userStorageKey in data) {
+    prompts = data[userStorageKey] as Prompt[]
+  }
+
+  await chrome.storage.local.set({
+    [userStorageKey]: [...prompts.filter((p) => p.command !== prompt.command)],
+  })
+}
+
+export const normalizeAct = (act: string) => {
   const regex1 = /[\s\`/]+/g
   let result = act.replace(regex1, '_')
 

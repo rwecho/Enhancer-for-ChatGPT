@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { getPrompts, Prompt } from '@/services/PromptsService'
+import { getPrompts, PromptWithTag } from '@/services/PromptsService'
 import {
+  Badge,
   Card,
   ChakraProvider,
   Kbd,
@@ -27,7 +28,7 @@ export const Prompts = () => {
     return <></>
   }
 
-  const [prompts, setPrompts] = useState<Prompt[]>()
+  const [prompts, setPrompts] = useState<PromptWithTag[]>()
   const promptsRef = useRef(prompts)
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const PromptList = ({
   prompts,
   handleRef,
 }: {
-  prompts: Prompt[]
+  prompts: PromptWithTag[]
   handleRef: HTMLElement
 }) => {
   const [selectIndex, setSelectIndex, selectIndexRef] = useStateRef(0)
@@ -172,7 +173,7 @@ const PromptList = ({
     submit(prompt)
   }
 
-  const submit = (prompt: Prompt) => {
+  const submit = (prompt: PromptWithTag) => {
     textArea.value = prompt.prompt
     textArea.dispatchEvent(new Event('input'))
     submitButton.click()
@@ -216,6 +217,17 @@ const PromptList = ({
               >
                 /{prompt.command}
               </Kbd>
+
+              {prompt.tag === 'awesome' && (
+                <Badge ml="1" alignSelf={'center'} size="xx-small">
+                  {prompt.tag}
+                </Badge>
+              )}
+              {prompt.tag === 'custom' && (
+                <Badge ml="1" alignSelf={'center'} size="xx-small">
+                  {prompt.tag}
+                </Badge>
+              )}
               <Spacer></Spacer>
               <Text>{prompt.act}</Text>
             </ListItem>

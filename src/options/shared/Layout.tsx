@@ -26,7 +26,8 @@ interface LinkItemProps {
   to: string
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Awesome Prompts', icon: TbPrompt, to: '#' },
+  { name: 'Awesome Prompts', icon: TbPrompt, to: '#/' },
+  { name: 'User Prompts', icon: TbPrompt, to: '#/user-prompts' },
 ]
 
 export const Layout = () => {
@@ -100,7 +101,9 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
       return false
     }
 
-    return to.replace('#', '/') === location.pathname
+    console.log(to, location.pathname)
+
+    return to.replace('#', '') === location.pathname
   }
 
   const baseStyle = {

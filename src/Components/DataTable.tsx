@@ -28,13 +28,30 @@ import {
   flexRender,
 } from '@tanstack/react-table'
 
+export type ExtraCommand<T> = {
+  title: string
+  action: (row: T) => void
+}
 export type DataTableProps<T> = {
   columns: ColumnDef<T>[]
   data: Array<T>
+  commands?: Array<ExtraCommand<T>>
+}
+const getVisiblePages = (maxPageSize: number, pageIndex: number) => {
+  if (maxPageSize <= 5) {
+    return Array.from(Array(maxPageSize).keys())
+  }
+  if (pageIndex <= 2) {
+    return Array.from(Array(5).keys())
+  }
+  if (pageIndex >= maxPageSize - 2) {
+    return Array.from(Array(5).keys()).map((i) => i + maxPageSize - 5)
+  }
+  return Array.from(Array(5).keys()).map((i) => i + pageIndex - 2)
 }
 
 export const DataTable = <T extends object>(props: DataTableProps<T>) => {
-  const { columns, data } = props
+  const { columns, data, commands } = props
   const table = useReactTable({
     data,
     columns,
@@ -45,6 +62,11 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
     //
     debugTable: true,
   })
+
+  const visiblePages = getVisiblePages(
+    table.getPageCount(),
+    table.getState().pagination.pageIndex
+  )
 
   return (
     <>
@@ -64,6 +86,14 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
                   )}
                 </Th>
               ))}
+
+              {commands && commands.length > 0 && (
+                <Th>
+                  <Flex justify="space-between" align="center">
+                    <Heading size={'sm'}>Operations</Heading>
+                  </Flex>
+                </Th>
+              )}
             </Tr>
           ))}
         </Thead>
@@ -84,6 +114,21 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
                     </Td>
                   )
                 })}
+
+                {commands && commands.length > 0 && (
+                  <Td>
+                    {commands.map((command, index) => {
+                      return (
+                        <Button
+                          key={index}
+                          onClick={() => command.action(row.original)}
+                        >
+                          {command.title}
+                        </Button>
+                      )
+                    })}
+                  </Td>
+                )}
               </Tr>
             )
           })}
@@ -121,9 +166,32 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
         >
           {'<'}
         </Button>
+
+        {visiblePages.map((page, index) => (
+          <Button
+            key={index}
+            onClick={() => table.setPageIndex(page)}
+            rounded={0}
+            color={
+              page === table.getState().pagination.pageIndex
+                ? 'white'
+                : undefined
+            }
+            bg={
+              page === table.getState().pagination.pageIndex
+                ? 'teal.500'
+                : undefined
+            }
+          >
+            {page + 1}
+          </Button>
+        ))}
         <Button
           onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
+          disabled={
+            !table.getCanNextPage() &&
+            table.getState().pagination.pageIndex < table.getPageCount() - 1
+          }
         >
           {'>'}
         </Button>
@@ -141,7 +209,7 @@ export const DataTable = <T extends object>(props: DataTableProps<T>) => {
             const page = value - 1
             table.setPageIndex(page)
           }}
-          min={0}
+          min={1}
           max={table.getPageCount()}
         >
           <NumberInputField />
