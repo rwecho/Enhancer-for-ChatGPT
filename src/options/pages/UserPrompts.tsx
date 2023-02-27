@@ -7,7 +7,14 @@ import {
   Prompt,
   removeUserPrompt,
 } from '@/services/PromptsService'
-import { Card, CardHeader, Heading, Button, CardBody } from '@chakra-ui/react'
+import {
+  Card,
+  CardHeader,
+  Heading,
+  Button,
+  CardBody,
+  useToast,
+} from '@chakra-ui/react'
 import { ColumnDef } from '@tanstack/react-table'
 import React, { useEffect, useMemo, useState } from 'react'
 import { CreateOrUpdateUserPromptModal } from './CreateOrUpdateUserPromptModal'
@@ -16,6 +23,7 @@ export const UserPrompts = () => {
   const [data, setData] = useState<Prompt[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const createOrUpdateModal = useCreateAndUpdateModal()
+  const toast = useToast()
   const columns = useMemo<Array<ColumnDef<Prompt>>>(
     () => [
       {
@@ -64,6 +72,14 @@ export const UserPrompts = () => {
 
     addOrUpdateUserPrompt(newPrompt)
     setData([...data, newPrompt])
+
+    toast({
+      title: 'tips',
+      description: 'Add prompt success',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    })
   }
 
   const handleEdit = async (prompt: Prompt) => {
@@ -82,10 +98,26 @@ export const UserPrompts = () => {
 
     addOrUpdateUserPrompt(newPrompt)
     setData([...data.filter((o) => o.command !== prompt.command), newPrompt])
+
+    toast({
+      title: 'tips',
+      description: 'Update prompt success',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    })
   }
   const handleDelete = async (prompt: Prompt) => {
     await removeUserPrompt(prompt)
     setData([...data.filter((o) => o.command !== prompt.command)])
+
+    toast({
+      title: 'tips',
+      description: 'Remove prompt success',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    })
   }
   return (
     <Card variant={'elevated'}>

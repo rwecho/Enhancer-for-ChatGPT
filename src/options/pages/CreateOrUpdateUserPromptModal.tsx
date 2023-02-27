@@ -28,7 +28,13 @@ export const CreateOrUpdateUserPromptModal = (
 
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true })
 
-  const initialValues = item ?? ({} as Prompt)
+  const initialValues =
+    item ??
+    ({
+      command: '',
+      act: '',
+      prompt: '',
+    } as Prompt)
 
   const onSubmit = (values: Prompt) => {
     postOk(values)

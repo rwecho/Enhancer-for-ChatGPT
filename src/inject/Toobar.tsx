@@ -1,11 +1,21 @@
 import React from 'react'
 import { FaFilePdf, FaImage } from 'react-icons/fa'
 import { exportPdf, exportImage } from '@/services/ExportService'
-import { Button, Card, VStack } from '@chakra-ui/react'
+import { Button, Card, useToast, VStack } from '@chakra-ui/react'
 import { getThreadElement } from './selector'
+import { TbTerminal } from 'react-icons/tb'
+import useCreateAndUpdateModal from '@/hooks/useCreateAndUpdateModal'
+import { CreateOrUpdateUserPromptModal } from '@/options/pages/CreateOrUpdateUserPromptModal'
+import {
+  addOrUpdateUserPrompt,
+  normalizeAct,
+  Prompt,
+} from '@/services/PromptsService'
 
 export const Toolbar = () => {
   const thread = getThreadElement()
+  const createOrUpdateModal = useCreateAndUpdateModal()
+  const toast = useToast()
   const handlePdf = () => {
     if (!thread) {
       return
@@ -21,8 +31,38 @@ export const Toolbar = () => {
     exportImage(thread)
   }
 
+  const handlePrompt = async () => {
+    const promptText = await navigator.clipboard.readText()
+    const prompt = await createOrUpdateModal.show(
+      CreateOrUpdateUserPromptModal,
+      {
+        act: '',
+        command: '',
+        prompt: promptText,
+      }
+    )
+    if (!prompt) {
+      return
+    }
+
+    let newPrompt = {
+      ...prompt,
+      command: normalizeAct((prompt as any).act),
+    } as Prompt
+
+    await addOrUpdateUserPrompt(newPrompt)
+
+    toast({
+      title: 'tips',
+      description: 'Add prompt success',
+      status: 'success',
+      duration: 9000,
+      isClosable: true,
+    })
+  }
+
   return (
-    <Card pos={'absolute'} top={'4'} right={'4'}>
+    <Card pos={'absolute'} top={{ base: '16', md: '4' }} right={'4'}>
       <VStack minW={'32'} spacing={0}>
         <Button
           w={'full'}
@@ -45,6 +85,18 @@ export const Toolbar = () => {
           justifyContent={'flex-start'}
         >
           Export Image
+        </Button>
+
+        <Button
+          w={'full'}
+          leftIcon={<TbTerminal></TbTerminal>}
+          borderRadius={'0'}
+          variant="ghost"
+          onClick={handlePrompt}
+          fontWeight={'normal'}
+          justifyContent={'flex-start'}
+        >
+          Add a prompt
         </Button>
       </VStack>
     </Card>
