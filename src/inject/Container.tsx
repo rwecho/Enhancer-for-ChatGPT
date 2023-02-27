@@ -5,20 +5,21 @@ import { getTextAreaElement } from './selector'
 import { Prompts } from './Prompts'
 import { Toolbar } from './Toobar'
 import { CreateAndUpdateModalProvider } from '@/hooks/useCreateAndUpdateModal'
+import { ChatToolbar } from './ChatToolbar'
 
 let root: Root | null = null
 let div: HTMLElement | null = null
-let textAreaId: string | null | undefined = null
+let textArea: HTMLElement | null | undefined = null
 
 export const Container = () => {
   useEffect(() => {
     var interval = setInterval(() => {
-      const textArea = getTextAreaElement()
-      if (!textArea || textAreaId === textArea.getAttribute('data-id')) {
+      const newTextArea = getTextAreaElement()
+      if (!newTextArea || textArea === newTextArea) {
         return
       }
 
-      textAreaId = textArea.getAttribute('data-id')
+      textArea = newTextArea
       root?.unmount()
       div?.remove()
       div = document.createElement('div')
@@ -29,6 +30,7 @@ export const Container = () => {
           <CreateAndUpdateModalProvider>
             <Toolbar></Toolbar>
             <Prompts></Prompts>
+            <ChatToolbar></ChatToolbar>
           </CreateAndUpdateModalProvider>
         </ChakraProvider>
       )

@@ -7,7 +7,7 @@
     "service_worker": "js/background.js",
     "type": "module"
   },
-  "permissions": ["storage"],
+  "permissions": ["storage", "tts"],
 
   "host_permissions": ["*://chat.openai.com/*"],
   "content_scripts": [

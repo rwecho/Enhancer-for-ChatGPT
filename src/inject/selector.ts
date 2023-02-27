@@ -19,3 +19,7 @@ export const getThreadElement = () => {
     "[class*='react-scroll-to-bottom']>[class*='react-scroll-to-bottom']>div"
   ) ?? document.querySelector('main .overflow-y-auto')) as HTMLElement
 }
+
+export const getChatElements = () => {
+  return document.querySelectorAll('main div.w-full.border-b')
+}
