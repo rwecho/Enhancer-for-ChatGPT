@@ -1,11 +1,5 @@
-import {
-  Button,
-  Center,
-  ChakraProvider,
-  HStack,
-  IconButton,
-} from '@chakra-ui/react'
-import React, { useEffect, useRef, useState } from 'react'
+import { Center, ChakraProvider, Collapse, IconButton } from '@chakra-ui/react'
+import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { getChatElements, getThreadElement } from './selector'
 import { AiOutlineSound } from 'react-icons/ai'
@@ -96,12 +90,14 @@ const ChatToolbarView = ({
     }
   }, [])
   return (
-    <Center mb={4} display={mouseOver ? 'flex' : 'none'}>
-      <IconButton
-        aria-label="Search database"
-        icon={<AiOutlineSound />}
-        onClick={handleTts}
-      />
-    </Center>
+    <Collapse in={mouseOver} animateOpacity>
+      <Center mb={4}>
+        <IconButton
+          aria-label="Search database"
+          icon={<AiOutlineSound />}
+          onClick={handleTts}
+        />
+      </Center>
+    </Collapse>
   )
 }
