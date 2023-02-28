@@ -19,19 +19,19 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "/images/icon16.jpg",
-      "32": "/images/icon32.jpg",
-      "48": "/images/icon48.jpg",
-      "64": "/images/icon64.jpg",
-      "128": "/images/icon128.jpg"
+      "16": "/images/icon16.png",
+      "32": "/images/icon32.png",
+      "48": "/images/icon48.png",
+      "64": "/images/icon64.png",
+      "128": "/images/icon128.png"
     }
   },
   "icons": {
-    "16": "/images/icon16.jpg",
-    "32": "/images/icon32.jpg",
-    "48": "/images/icon48.jpg",
-    "64": "/images/icon64.jpg",
-    "128": "/images/icon128.jpg"
+    "16": "/images/icon16.png",
+    "32": "/images/icon32.png",
+    "48": "/images/icon48.png",
+    "64": "/images/icon64.png",
+    "128": "/images/icon128.png"
   },
   "options_ui": {
     "page": "options.html",
