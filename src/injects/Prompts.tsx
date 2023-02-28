@@ -17,6 +17,7 @@ import {
   getTextAreaElement,
 } from './selector'
 import useStateRef from '@/hooks/useStateRef'
+import { throttleRAF } from '@/utils/utils'
 
 let root: Root | null = null
 let div: HTMLElement | null = null
@@ -139,7 +140,13 @@ const PromptList = ({
   }
 
   useEffect(() => {
-    handleRef.addEventListener('keydown', downHandler, { capture: true })
+    const downHandlerThrottled = throttleRAF(downHandler, {
+      trailing: true,
+    })
+
+    handleRef.addEventListener('keydown', downHandlerThrottled, {
+      capture: true,
+    })
 
     return () => {
       handleRef.removeEventListener('keydown', downHandler, { capture: true })
