@@ -8,7 +8,7 @@ module.exports = {
         popup: path.join(srcDir, 'popup/index.tsx'),
         options: path.join(srcDir, 'options/index.tsx'),
         background: path.join(srcDir, 'background/index.ts'),
-        inject: path.join(srcDir, 'inject/index.tsx'),
+        injects: path.join(srcDir, 'injects/index.tsx'),
     },
     output: {
         path: path.join(__dirname, "../dist/js"),
