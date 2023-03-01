@@ -18,7 +18,7 @@ import {
   getTextAreaElement,
 } from './selector'
 import useStateRef from '@/hooks/useStateRef'
-import { throttleRAF } from '@/utils/utils'
+import { debounce, throttleRAF } from '@/utils/utils'
 import { LightOrDark } from '@/Components'
 
 let root: Root | null = null
@@ -82,9 +82,11 @@ export const Prompts = () => {
     )
   }
 
+  const handlePromptsDebounce = debounce(handlePrompts, 300)
+
   const textChange = useCallback((e: Event) => {
     if (e.target instanceof HTMLTextAreaElement) {
-      handlePrompts(e.target.value)
+      handlePromptsDebounce(e.target.value)
     }
   }, [])
 
@@ -243,7 +245,13 @@ const PromptList = ({
               )}
               <Spacer></Spacer>
               <Show above="md">
-                <Text>{prompt.act}</Text>
+                <Text
+                  sx={{
+                    color: isActive ? 'gray.900' : undefined,
+                  }}
+                >
+                  {prompt.act}
+                </Text>
               </Show>
             </ListItem>
           )
