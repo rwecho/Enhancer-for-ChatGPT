@@ -144,7 +144,7 @@ const PromptList = ({
 
   useEffect(() => {
     const downHandlerThrottled = throttleRAF(downHandler, {
-      trailing: true,
+      trailing: false,
     })
 
     handleRef.addEventListener('keydown', downHandlerThrottled, {
@@ -152,7 +152,9 @@ const PromptList = ({
     })
 
     return () => {
-      handleRef.removeEventListener('keydown', downHandler, { capture: true })
+      handleRef.removeEventListener('keydown', downHandlerThrottled, {
+        capture: true,
+      })
     }
   }, [])
 
