@@ -100,9 +100,6 @@ const NavItem = ({ icon, to, children, ...rest }: NavItemProps) => {
     if (!to) {
       return false
     }
-
-    console.log(to, location.pathname)
-
     return to.replace('#', '') === location.pathname
   }
 

@@ -10,6 +10,7 @@ import { createRoot } from 'react-dom/client'
 import { getChatElements, getThreadElement } from './selector'
 import { AiOutlineSound, AiOutlineStop } from 'react-icons/ai'
 import { speak, stop } from '@/services/TtsService'
+import { LightOrDark } from '@/Components'
 
 export const ChatToolbar = () => {
   const thread = getThreadElement()
@@ -53,10 +54,12 @@ export const ChatToolbar = () => {
     const root = createRoot(div)
     root.render(
       <ChakraProvider>
-        <ChatToolbarView
-          container={container}
-          text={text as HTMLElement}
-        ></ChatToolbarView>
+        <LightOrDark>
+          <ChatToolbarView
+            container={container}
+            text={text as HTMLElement}
+          ></ChatToolbarView>
+        </LightOrDark>
       </ChakraProvider>
     )
   }

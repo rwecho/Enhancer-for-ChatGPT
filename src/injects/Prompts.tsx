@@ -18,6 +18,7 @@ import {
 } from './selector'
 import useStateRef from '@/hooks/useStateRef'
 import { throttleRAF } from '@/utils/utils'
+import { LightOrDark } from '@/Components'
 
 let root: Root | null = null
 let div: HTMLElement | null = null
@@ -72,7 +73,9 @@ export const Prompts = () => {
     root.render(
       <React.StrictMode>
         <ChakraProvider>
-          <PromptList prompts={filteredPrompts} handleRef={container} />
+          <LightOrDark>
+            <PromptList prompts={filteredPrompts} handleRef={container} />
+          </LightOrDark>
         </ChakraProvider>
       </React.StrictMode>
     )

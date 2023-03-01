@@ -6,6 +6,7 @@ import { Prompts } from './Prompts'
 import { Toolbar } from './Toobar'
 import { CreateAndUpdateModalProvider } from '@/hooks/useCreateAndUpdateModal'
 import { ChatToolbar } from './ChatToolbar'
+import { LightOrDark } from '@/Components'
 
 let root: Root | null = null
 let div: HTMLElement | null = null
@@ -27,12 +28,13 @@ export const Container = () => {
       document.body.appendChild(div)
       root.render(
         <ChakraProvider theme={theme}>
-          <ColorModeScript initialColorMode="system"></ColorModeScript>
-          <CreateAndUpdateModalProvider>
-            <Toolbar></Toolbar>
-            <Prompts></Prompts>
-            <ChatToolbar></ChatToolbar>
-          </CreateAndUpdateModalProvider>
+          <LightOrDark>
+            <CreateAndUpdateModalProvider>
+              <Toolbar></Toolbar>
+              <Prompts></Prompts>
+              <ChatToolbar></ChatToolbar>
+            </CreateAndUpdateModalProvider>
+          </LightOrDark>
         </ChakraProvider>
       )
     }, 1000)

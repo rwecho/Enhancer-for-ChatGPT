@@ -2,15 +2,17 @@ import React from 'react'
 import { Popup } from './Popup'
 import '@/index.css'
 import { createRoot } from 'react-dom/client'
-import { ChakraProvider, ColorModeScript, theme } from '@chakra-ui/react'
+import { ChakraProvider, theme } from '@chakra-ui/react'
+import { LightOrDark } from '@/Components'
 
 const root = createRoot(document.getElementById('root')!)
 
 root.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
-      <ColorModeScript initialColorMode="system"></ColorModeScript>
-      <Popup />
+      <LightOrDark>
+        <Popup />
+      </LightOrDark>
     </ChakraProvider>
   </React.StrictMode>
 )
