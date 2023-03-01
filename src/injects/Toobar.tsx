@@ -1,7 +1,7 @@
 import React from 'react'
 import { FaFilePdf, FaImage } from 'react-icons/fa'
 import { exportPdf, exportImage } from '@/services/ExportService'
-import { Button, Card, useToast, VStack } from '@chakra-ui/react'
+import { Button, Card, Show, useToast, VStack } from '@chakra-ui/react'
 import { getThreadElement } from './selector'
 import { TbTerminal } from 'react-icons/tb'
 import useCreateAndUpdateModal from '@/hooks/useCreateAndUpdateModal'
@@ -63,7 +63,12 @@ export const Toolbar = () => {
 
   return (
     <Card pos={'absolute'} top={{ base: '16', md: '4' }} right={'4'}>
-      <VStack minW={'32'} spacing={0}>
+      <VStack
+        minW={{
+          md: '32',
+        }}
+        spacing={0}
+      >
         <Button
           w={'full'}
           leftIcon={<FaFilePdf></FaFilePdf>}
@@ -73,7 +78,7 @@ export const Toolbar = () => {
           fontWeight={'normal'}
           justifyContent={'flex-start'}
         >
-          Export Pdf
+          <Show above="md">Export Pdf</Show>
         </Button>
         <Button
           w={'full'}
@@ -84,7 +89,7 @@ export const Toolbar = () => {
           fontWeight={'normal'}
           justifyContent={'flex-start'}
         >
-          Export Image
+          <Show above="md">Export Image</Show>
         </Button>
 
         <Button
@@ -96,7 +101,7 @@ export const Toolbar = () => {
           fontWeight={'normal'}
           justifyContent={'flex-start'}
         >
-          Add a prompt
+          <Show above="md">Add a prompt</Show>
         </Button>
       </VStack>
     </Card>

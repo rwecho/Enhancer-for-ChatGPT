@@ -7,6 +7,7 @@ import {
   Kbd,
   List,
   ListItem,
+  Show,
   Spacer,
   Text,
 } from '@chakra-ui/react'
@@ -241,7 +242,9 @@ const PromptList = ({
                 </Badge>
               )}
               <Spacer></Spacer>
-              <Text>{prompt.act}</Text>
+              <Show above="md">
+                <Text>{prompt.act}</Text>
+              </Show>
             </ListItem>
           )
         })}
