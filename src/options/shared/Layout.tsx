@@ -77,7 +77,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="xl" fontFamily="monospace" fontWeight="bold">
-          Enhancer for ChatGPT
+          ChatEnhancer
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
@@ -166,7 +166,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <Text fontSize="2xl" ml="8" fontFamily="monospace" fontWeight="bold">
-        Enhancer for ChatGPT
+        ChatEnhancer
       </Text>
     </Flex>
   )

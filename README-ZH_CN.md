@@ -1,7 +1,7 @@
 <p align="center">
   <img width="180" src="./public/images/icon128.png" alt="ChatGPT">
-  <h1 align="center">Enhancer For ChatGPT</h1>
-  <p align="center">Enhancer for ChatGPT 是一个 Chrome&Edge 的扩展程序, 它可以帮助我们在更好的使用 chatGPT.</p>
+  <h1 align="center">ChatEnhancer</h1>
+  <p align="center">ChatEnhancer 是一个 Chrome&Edge 的扩展程序, 它可以帮助我们在更好的使用 chatGPT.</p>
 </p>
 
 所有的 icons 由 OpenAI DALL·E 2 生成

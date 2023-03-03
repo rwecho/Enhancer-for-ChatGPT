@@ -1,5 +1,5 @@
 {
-  "name": "Enhancer for ChatGPT",
+  "name": "ChatEnhancer",
   "description": "A browser extension that enhances our ability to utilize ChatGPT effectively.",
   "manifest_version": 3,
   "version": "1.0.0",
