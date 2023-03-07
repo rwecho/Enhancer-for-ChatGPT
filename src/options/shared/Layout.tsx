@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import { FiMenu } from 'react-icons/fi'
 
-import { TbPrompt, TbTerminal, TbTerminal2 } from 'react-icons/tb'
+import { TbSettings, TbTerminal, TbTerminal2 } from 'react-icons/tb'
 import { IconType } from 'react-icons'
 
 interface LinkItemProps {
@@ -28,6 +28,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Awesome Prompts', icon: TbTerminal, to: '#/' },
   { name: 'User Prompts', icon: TbTerminal2, to: '#/user-prompts' },
+  { name: 'Settings', icon: TbSettings, to: '#/settings' },
 ]
 
 export const Layout = () => {

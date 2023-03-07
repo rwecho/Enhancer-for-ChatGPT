@@ -1,3 +1,5 @@
 export * from './DataTable'
 export * from './LoadingBox'
 export * from './LightOrDark'
+export * from './Select'
+export * from './NumberInput'

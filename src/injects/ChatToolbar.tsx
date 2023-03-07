@@ -9,8 +9,8 @@ import React, { useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { getChatElements, getThreadElement } from './selector'
 import { AiOutlineSound, AiOutlineStop } from 'react-icons/ai'
-import { speak, stop } from '@/services/TtsService'
 import { LightOrDark } from '@/Components'
+import { useTTS } from '@/hooks/useTTS'
 
 export const ChatToolbar = () => {
   const thread = getThreadElement()
@@ -74,6 +74,8 @@ const ChatToolbarView = ({
   text: HTMLElement
   container: HTMLElement
 }) => {
+  const { speak, pause, resume } = useTTS()
+
   const [mouseOver, setMouseOver] = useState(false)
   const handleTtsSpeak = () => {
     const textContent = text.textContent
@@ -84,7 +86,7 @@ const ChatToolbarView = ({
   }
 
   const handleTtsStop = () => {
-    stop()
+    pause()
   }
 
   useEffect(() => {
